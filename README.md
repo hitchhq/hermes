@@ -50,7 +50,7 @@ app.use('hello/:name', (message, next) => {
 ### Case 2
 ```js
 function avoidFromBroker (message, next) {
-  if (message.from.broker) return next(false);
+  if (message.from.broker) return next.cancel();
 }
 
 app.use('hello/:name', avoidFromBroker, (message, next) => {
@@ -62,7 +62,7 @@ app.use('hello/:name', avoidFromBroker, (message, next) => {
 ### Case 3
 ```js
 function avoidFromClient (message, next) {
-  if (message.from.client) return next(false);
+  if (message.from.client) return next.cancel();
 }
 
 app.use('hello/:name', avoidFromClient, (message, next) => {
@@ -120,13 +120,13 @@ router.use('world', (message, next) => {
 router.in.client.use(':name', (message, next) => {
   message.body = { msg: `Hello ${message.route.params.name} from Hermes!` };
   message.source.send(); // Reply back to client
-  next(false); // Do not forward message
+  next.cancel(); // Do not forward message
 });
 
 router.in.broker.use(':name', (message, next) => {
   message.body = { msg: `Hello ${message.route.params.name} from Hermes!` };
   message.source.send(); // Reply back to broker
-  next(false); // Do not forward message
+  next.cancel(); // Do not forward message
 });
 
 module.exports = router;
@@ -144,9 +144,8 @@ app.use((message, next) => {
 ### Catch errors
 
 ```js
-app.catch((err, message, next) => {
+app.use((err, message, next) => {
   console.log('Handle error here...');
   next(err); // Optionally forward error to next middleware
 });
-
 ```
