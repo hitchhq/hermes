@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Socket IO client example</title>
+</head>
+<body>
+  <button id="hello">Say hello</button>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io.connect('http://localhost');
+    socket.on('hello/fran', function (payload) {
+      console.dir(payload);
+    });
+
+    document.getElementById('hello').addEventListener('click', function () {
+      console.log('emitted');
+      socket.emit('hello/fran', { message: 'Hello from Browser' });
+    });
+  </script>
+</body>
+</html>
