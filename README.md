@@ -35,9 +35,7 @@ npm install --save hermes
 
 ## Getting Started
 
-```js
-
-```
+To be done...
 
 ## API
 
