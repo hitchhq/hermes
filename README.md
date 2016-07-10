@@ -50,7 +50,7 @@ app.use('hello/:name', (message, next) => {
 ### Case 2
 ```js
 function avoidFromBroker (message, next) {
-  if (message.from.broker) return next.cancel();
+  if (message.from.broker) return next();
 }
 
 app.use('hello/:name', avoidFromBroker, (message, next) => {
@@ -62,7 +62,7 @@ app.use('hello/:name', avoidFromBroker, (message, next) => {
 ### Case 3
 ```js
 function avoidFromClient (message, next) {
-  if (message.from.client) return next.cancel();
+  if (message.from.client) return next();
 }
 
 app.use('hello/:name', avoidFromClient, (message, next) => {
