@@ -11,11 +11,11 @@ npm install --save hermes
 
 ## Features
 
-1. Routing and middlewares (Express-like)
-2. Forwarding messages from **Client** to **Broker** and viceversa.
-3. Cancel the forwarding (message will continue passing through middlewares, if any).
-4. Cancel the message (message will not continue passing through middlewares).
-5. Answer back to client or broker, using same or different topic and payload.
+* Express-like Routing and middlewares.
+* Forwarding messages from **Client** to **Broker** and viceversa.
+* Cancel the forwarding (message will continue passing through middlewares, if any).
+* Cancel the message (message will not continue passing through middlewares).
+* Answer back to client or broker, using same or different topic and payload.
 
 ## Getting Started
 
