@@ -1,4 +1,4 @@
-const router = require('../../lib/router')();
+const router = require('hermes-router')();
 
 router.in.client.use(':name', (message, next) => {
   console.log(`Hello from Client ${message.route.params.name}!`);
