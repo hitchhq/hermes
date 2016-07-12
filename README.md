@@ -1,4 +1,4 @@
-![](./hermes.jpg)
+![](https://raw.githubusercontent.com/hitchhq/hermes/master/hermes.jpg)
 
 **Hermes is a real-time messaging framework**. It lets you connect a client with a
 broker and manage all the communication in between.
