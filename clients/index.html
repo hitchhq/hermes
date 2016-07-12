@@ -14,7 +14,6 @@
     });
 
     document.getElementById('hello').addEventListener('click', function () {
-      console.log('emitted');
       socket.emit('hello/fran', { message: 'Hello from Browser' });
     });
   </script>
