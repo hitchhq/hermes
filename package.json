@@ -8,6 +8,8 @@
   "scripts": {
     "test": "DEBUG=hermes node examples/mqtt_server"
   },
+  "repository": "https://github.com/hitchhq/hermes.git",
+  "bugs": "https://github.com/hitchhq/hermes/issues",
   "dependencies": {
     "array-flatten": "^2.1.0",
     "debug": "~2.2.0",
