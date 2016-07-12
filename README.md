@@ -100,13 +100,12 @@ cancelled, so it will not reach further middlewares/routes.
 ```js
 const hello = require('./routes/hello');
 
-app.in.client.use('hello', hello);
+app.use('hello', hello);
 ```
 
 `routes/hello.js`
 ```js
-const hermes = require('hermes');
-const router = hermes.Router();
+const router = require('hermes').router();
 
 router.use(':name', (message, next) => {
   console.log(`Hello ${message.route.params.name}!`);
@@ -120,10 +119,6 @@ router.use('world', (message, next) => {
 
 router.in.client.use(':name', (message, next) => {
   message.reply('hello/response', { msg: `Hello ${message.route.params.name} from Hermes!` });
-});
-
-router.in.broker.use(':name', (message, next) => {
-  message.reply({ msg: `Hello ${message.route.params.name} from Hermes!` });
 });
 
 module.exports = router;
