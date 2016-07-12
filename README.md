@@ -18,7 +18,7 @@
 [+] Don't forward messages. Just listen client, and use routes and middlewares.
 
 **Case 6:**
-[ ] Answer back to source from route handler.
+[+] Answer back to source from route handler.
 
 ## Features
 
@@ -122,15 +122,11 @@ router.use('world', (message, next) => {
 });
 
 router.in.client.use(':name', (message, next) => {
-  message.body = { msg: `Hello ${message.route.params.name} from Hermes!` };
-  message.source.send(); // Reply back to client
-  next.cancel(); // Do not forward message
+  message.reply('hello/response', { msg: `Hello ${message.route.params.name} from Hermes!` });
 });
 
 router.in.broker.use(':name', (message, next) => {
-  message.body = { msg: `Hello ${message.route.params.name} from Hermes!` };
-  message.source.send(); // Reply back to broker
-  next.cancel(); // Do not forward message
+  message.reply({ msg: `Hello ${message.route.params.name} from Hermes!` });
 });
 
 module.exports = router;
