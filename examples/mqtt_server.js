@@ -1,6 +1,6 @@
 const hermes = require('../');
-const mqtt_broker = require('../brokers/mqtt');
-const socketio_client = require('../clients/socketio');
+const mqtt_broker = require('hermes-mqtt');
+const socketio_client = require('hermes-socketio');
 const hello = require('./routes/hello');
 
 // **********************
@@ -10,7 +10,7 @@ const path = require('path');
 const fs = require('fs');
 const http_server = require('http').createServer(handler);
 function handler (req, res) {
-  fs.readFile(path.resolve(__dirname, '../clients/index.html'),
+  fs.readFile(path.resolve(__dirname, './index.html'),
   (err, data) => {
     if (err) {
       res.writeHead(500);

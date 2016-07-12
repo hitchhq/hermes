@@ -6,6 +6,12 @@ To test this out, open a terminal window and write:
 npm install mqtt -g
 ```
 
+Navigate to the example directory and write:
+
+```
+npm install hermes-mqtt hermes-socketio
+```
+
 Start the server:
 
 ```
