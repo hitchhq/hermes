@@ -1,7 +1,7 @@
 {
   "name": "hermes",
   "version": "0.0.1",
-  "description": "Real-time messaging library",
+  "description": "Real-time messaging framework",
   "main": "index.js",
   "author": "Francisco Méndez Vilas (fmvilas@gmail.com)",
   "license": "MIT",
