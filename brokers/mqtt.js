@@ -1,4 +1,5 @@
 const mqtt = require('mqtt');
+const HermesMessage = require('../lib/message');
 
 function init (settings) {
   return function (hermes) {
@@ -34,21 +35,24 @@ function _published (topic, message, packet) {
 }
 
 function _createMessage (packet, client) {
-  return {
+  const message = new HermesMessage({
     protocol: this.server_settings.protocol || 'mqtt',
     payload: packet.payload,
-    broker_client: client,
+    connection: client,
     topic: packet.topic,
     headers: {
       cmd: packet.cmd,
       retain: packet.retain,
       qos: packet.qos,
       dup: packet.dup,
-      length: packet.length,
-      topic: packet.topic
+      length: packet.length
     },
     original_packet: packet
-  };
+  });
+
+  message.send = _send.bind(this, message);
+
+  return message;
 }
 
 function _send (message) {

@@ -15,16 +15,14 @@ router.use('world', (message, next) => {
   next();
 });
 
-/*router.in.client.use(':name', (message, next) => {
-  message.body = { msg: `Hello ${message.route.params.name} from Hermes!` };
-  message.source.send();
-  next.cancel();
+router.in.client.use(':name', (message) => {
+  // Optionally use topic and payload to reply
+  message.reply('hello/response', { msg: `Hello ${message.route.params.name} from Hermes!` });
 });
 
-router.in.broker.use(':name', (message, next) => {
-  message.body = { msg: `Hello ${message.route.params.name} from Hermes!` };
-  message.source.send();
-  next.cancel();
-});*/
+router.in.broker.use(':name', (message) => {
+  // Optionally use payload to reply to same topic
+  message.reply({ msg: `Hello ${message.route.params.name} from Hermes!` });
+});
 
 module.exports = router;

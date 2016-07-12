@@ -13,6 +13,11 @@
       console.dir(payload);
     });
 
+    socket.on('hello/response', function (payload) {
+      console.log('response:');
+      console.dir(payload);
+    });
+
     document.getElementById('hello').addEventListener('click', function () {
       socket.emit('hello/fran', { message: 'Hello from Browser' });
     });

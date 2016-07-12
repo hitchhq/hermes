@@ -1,4 +1,5 @@
 const socketio = require('socket.io');
+const HermesMessage = require('../lib/message');
 
 function init (settings) {
   return function (hermes) {
@@ -54,14 +55,18 @@ function _createMessage (topic, message) {
 }
 
 function _createMessageFromClient (topic, packet, client) {
-  return {
+  const message = new HermesMessage({
     protocol: 'ws',
     payload: packet.data[1],
     topic,
     headers: {},
-    ws_client: client,
+    connection: client,
     original_packet: packet
-  };
+  });
+
+  message.send = _send.bind(this, message);
+
+  return message;
 }
 
 function _send (message) {
