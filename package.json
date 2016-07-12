@@ -1,6 +1,6 @@
 {
   "name": "hermesjs",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Real-time messaging framework",
   "main": "index.js",
   "author": "Francisco Méndez Vilas (fmvilas@gmail.com)",
@@ -8,6 +8,18 @@
   "scripts": {
     "test": "DEBUG=hermes node examples/mqtt_server"
   },
+  "keywords": [
+    "real-time",
+    "real",
+    "time",
+    "messaging",
+    "mqtt",
+    "socketio",
+    "websockets",
+    "amqp",
+    "microservices",
+    "iot"
+  ],
   "repository": "https://github.com/hitchhq/hermes.git",
   "bugs": "https://github.com/hitchhq/hermes/issues",
   "dependencies": {
