@@ -19,11 +19,7 @@ npm install --save hermes
 
 ## Getting Started
 
-To be done...
-
-## API
-
-### Example 1
+### Example: Simple router
 ```js
 app.use('hello/:name', (message, next) => {
   // Do whatever here...
@@ -31,31 +27,23 @@ app.use('hello/:name', (message, next) => {
 });
 ```
 
-### Example 2
+### Example: Using multiple route handlers
 ```js
-function avoidFromBroker (message, next) {
-  if (message.from.broker) return next();
+function checkIsHelloWorld (message, next) {
+  // Message will not reach the other side if it's hello/world.
+  // By calling next.cancel(), if the message comes from the client
+  // it will not reach the broker and viceversa. However the message will
+  // still be routed onto next middlewares, if any.
+  if (message.route.params.name === 'world') return next.cancel();
 }
 
-app.use('hello/:name', avoidFromBroker, (message, next) => {
-  // Do whatever here...
+app.use('hello/:name', checkIsHelloWorld, (message, next) => {
+  console.log('You will see this even if it is hello/world. Read comments above.');
   next();
 });
 ```
 
-### Example 3
-```js
-function avoidFromClient (message, next) {
-  if (message.from.client) return next();
-}
-
-app.use('hello/:name', avoidFromClient, (message, next) => {
-  // Do whatever here...
-  next();
-});
-```
-
-### Example 4
+### Example: Using routes only for messages from the broker
 
 A message from broker, with `hello/:name` topic, is received:
 
@@ -66,7 +54,7 @@ app.in.broker.use('hello/:name', (message, next) => {
 });
 ```
 
-### Example 5
+### Example: Using routes only for messages from the client
 
 A message from client, with `hello/:name` topic, is received:
 
@@ -77,7 +65,36 @@ app.in.client.use('hello/:name', (message, next) => {
 });
 ```
 
-### Use Express-like router
+### Example: Cancelling messages
+
+```js
+app.use('hello/:name', (message, next) => {
+  // This will cancel the hello/world message. Even if we call
+  // next, further middlewares will not be called.
+  if (message.route.params.name === 'world') message.cancel();
+  next();
+});
+```
+
+### Example: Replying back
+
+A message from client, with `hello/:name` topic, is received:
+
+```js
+app.in.client.use('hello/:name', (message, next) => {
+  if (message.route.params.name === 'world') {
+    return message.reply('hello/world/response', 'Stop using hello world, please.');
+  }
+
+  next();
+});
+```
+
+A message saying `Stop using hello world, please.` is sent back to client,
+on `hello/world/response` topic. **Note**: When replying the message is automatically
+cancelled, so it will not reach further middlewares/routes.
+
+### Use Express-like router to organize your code
 
 `index.js`
 ```js
@@ -117,7 +134,7 @@ module.exports = router;
 ```js
 app.use((message, next) => {
   console.log('Handle message here...');
-  next(); // Forward message to broker
+  next(); // Forward message
 });
 ```
 
