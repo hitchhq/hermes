@@ -1,7 +1,7 @@
 {
-  "name": "hermes-server",
+  "name": "hermes",
   "version": "0.0.1",
-  "description": "Hermes server",
+  "description": "Real-time messaging library",
   "main": "index.js",
   "author": "Francisco Méndez Vilas (fmvilas@gmail.com)",
   "license": "MIT",
