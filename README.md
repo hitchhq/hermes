@@ -3,24 +3,28 @@
 ## Use Cases
 
 **Case 1:**
-Forward messages in both directions, and use routes and middlewares.
+[+] Forward messages in both directions, and use routes and middlewares.
 
 **Case 2:**
-Forward messages from client to broker, and use routes and middlewares.
+[+] Forward messages from client to broker, and use routes and middlewares.
 
 **Case 3:**
-Forward messages from broker to client, and use routes and middlewares.
+[+] Forward messages from broker to client, and use routes and middlewares.
 
 **Case 4:**
-Don't forward messages. Just listen broker, and use routes and middlewares.
+[+] Don't forward messages. Just listen broker, and use routes and middlewares.
 
 **Case 5:**
-Don't forward messages. Just listen client, and use routes and middlewares.
+[+] Don't forward messages. Just listen client, and use routes and middlewares.
+
+**Case 6:**
+[ ] Answer back to source from route handler.
 
 ## Features
 
 1. Routing and middlewares (Express-like)
 2. Forwarding messages from **Client** to **Broker** and viceversa (ability to cancel it from middlewares/routes)
+3. Ability to answer back to source from route handler or middleware.
 
 
 ## Architecture
