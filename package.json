@@ -1,5 +1,5 @@
 {
-  "name": "hermes",
+  "name": "hermesjs",
   "version": "0.0.1",
   "description": "Real-time messaging framework",
   "main": "index.js",

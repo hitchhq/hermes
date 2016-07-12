@@ -6,7 +6,7 @@ broker and manage all the communication in between.
 ## Installation
 
 ```
-npm install --save hermes
+npm install --save hermesjs
 ```
 
 ## Features
