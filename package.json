@@ -1,6 +1,6 @@
 {
   "name": "hermesjs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Real-time messaging framework",
   "main": "index.js",
   "author": "Francisco Méndez Vilas (fmvilas@gmail.com)",
@@ -25,7 +25,7 @@
   "dependencies": {
     "array-flatten": "^2.1.0",
     "debug": "~2.2.0",
-    "hermes-router": "~0.0.2",
+    "hermes-router": "~1.0.0",
     "path-to-regexp": "^1.5.3",
     "utils-merge": "^1.0.0"
   }
