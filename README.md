@@ -233,3 +233,8 @@ app.in.broker.use('hello/:name/:surname', (message, next) => {
 }
 });
 ```
+
+## Adapters
+
+* MQTT adapter: https://github.com/hitchhq/hermes-mqtt
+* Socket.IO adapter: https://github.com/hitchhq/hermes-socketio
