@@ -42,7 +42,7 @@ keys are `client` and `broker`.
 For instance, you can specify your Socket.IO client adapter:
 
 ```js
-const socketio_adapter = require('hermes-socketio');
+const socketio_adapter = require('hermesjs-socketio');
 const socketio = socketio_adapter();
 
 app.add('client', socketio);
@@ -51,7 +51,7 @@ app.add('client', socketio);
 or you can specify your MQTT broker adapter:
 
 ```js
-const mqtt_broker = require('hermes-mqtt');
+const mqtt_broker = require('hermesjs-mqtt');
 
 const mqtt = mqtt_broker({
   host_url: 'mqtt://test.mosquitto.org',

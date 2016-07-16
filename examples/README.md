@@ -9,7 +9,7 @@ npm install mqtt -g
 Navigate to the example directory and write:
 
 ```
-npm install hermes-mqtt hermes-socketio
+npm install hermesjs-mqtt hermesjs-socketio
 ```
 
 Start the server:

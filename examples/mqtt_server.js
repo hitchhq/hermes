@@ -1,6 +1,6 @@
 const hermes = require('../');
-const mqtt_broker = require('hermes-mqtt');
-const socketio_client = require('hermes-socketio');
+const mqtt_broker = require('hermesjs-mqtt');
+const socketio_client = require('hermesjs-socketio');
 const hello = require('./routes/hello');
 
 // **********************
