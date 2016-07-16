@@ -13,88 +13,81 @@ npm install --save hermesjs
 
 * Express-like Routing and middlewares.
 * Forwarding messages from **Client** to **Broker** and viceversa.
-* Cancel the forwarding (message will continue passing through middlewares, if any).
-* Cancel the message (message will not continue passing through middlewares).
+* Cancel the delivery (message will continue passing through middlewares, if any).
+* Stop the message (message will not continue passing through middlewares).
 * Answer back to client or broker, using same or different topic and payload.
 
 ## Getting Started
 
-### Example: Simple router
+Check [examples folder](./examples/).
+
+## API
+
+### App
+
+#### Constructor
+
+Initializing a Hermes app is actually really easy:
+
 ```js
-app.use('hello/:name', (message, next) => {
-  // Do whatever here...
-  next();
-});
+const hermes = require('hermesjs');
+const app = hermes();
 ```
 
-### Example: Using multiple route handlers
-```js
-function checkIsHelloWorld (message, next) {
-  // Message will not reach the other side if it's hello/world.
-  // By calling next.cancel(), if the message comes from the client
-  // it will not reach the broker and viceversa. However the message will
-  // still be routed onto next middlewares, if any.
-  if (message.route.params.name === 'world') return next.cancel();
-}
+#### app.add(key, value)
 
-app.use('hello/:name', checkIsHelloWorld, (message, next) => {
-  console.log('You will see this even if it is hello/world. Read comments above.');
-  next();
-});
+This method is used to add configuration parameters to your Hermes app. Special
+keys are `client` and `broker`.
+
+For instance, you can specify your Socket.IO client adapter:
+
+```js
+const socketio_adapter = require('hermes-socketio');
+const socketio = socketio_adapter();
+
+app.add('client', socketio);
 ```
 
-### Example: Using routes only for messages from the broker
-
-A message from broker, with `hello/:name` topic, is received:
+or you can specify your MQTT broker adapter:
 
 ```js
-app.in.broker.use('hello/:name', (message, next) => {
-  console.log(`Broker sent 'hello/${message.route.params.name}'`);
-  next(); // Forward message to client
+const mqtt_broker = require('hermes-mqtt');
+
+const mqtt = mqtt_broker({
+  host_url: 'mqtt://test.mosquitto.org',
+  topics: 'hello/#'
 });
+
+app.add('broker', mqtt);
 ```
 
-### Example: Using routes only for messages from the client
+#### app.use(...fn)
+#### app.use(route, ...fn)
+#### app.use(route, HermesRouter)
 
-A message from client, with `hello/:name` topic, is received:
+Use middlewares and routes. If you know how Connect/Express works, it's exactly the same:
 
-```js
-app.in.client.use('hello/:name', (message, next) => {
-  console.log(`Client sent 'hello/${message.route.params.name}'`);
-  next(); // Forward message to broker
-});
-```
-
-### Example: Cancelling messages
+**Middlewares:**
 
 ```js
-app.use('hello/:name', (message, next) => {
-  // This will cancel the hello/world message. Even if we call
-  // next, further middlewares will not be called.
-  if (message.route.params.name === 'world') message.cancel();
-  next();
-});
-```
-
-### Example: Replying back
-
-A message from client, with `hello/:name` topic, is received:
-
-```js
-app.in.client.use('hello/:name', (message, next) => {
-  if (message.route.params.name === 'world') {
-    return message.reply('hello/world/response', 'Stop using hello world, please.');
+app.use((message, next) => {
+  if (message.payload === 'Hello!') {
+    console.log('-.- Hi!');
   }
-
   next();
 });
 ```
 
-A message saying `Stop using hello world, please.` is sent back to client,
-on `hello/world/response` topic. **Note**: When replying the message is automatically
-cancelled, so it will not reach further middlewares/routes.
+**Routes:**
 
-### Use Express-like router to organize your code
+```js
+app.use('hello/:name', (message, next) => {
+  console.log(`Hello ${message.route.params.name}!`);
+  next();
+});
+```
+
+**HermesRouter**
 
 `index.js`
 ```js
@@ -124,20 +117,119 @@ router.in.client.use(':name', (message, next) => {
 module.exports = router;
 ```
 
-### Use a global middleware
-
-```js
-app.use((message, next) => {
-  console.log('Handle message here...');
-  next(); // Forward message
-});
-```
-
-### Catch errors
+**Catch Errors**
 
 ```js
 app.use((err, message, next) => {
   console.log('Handle error here...');
   next(err); // Optionally forward error to next middleware
+});
+```
+
+#### app.in.client.use(...fn)
+#### app.in.client.use(route, ...fn)
+#### app.in.client.use(route, HermesRouter)
+
+It's for the same purpose as `app.use` but this route/middleware will be only
+executed if the message comes from the client.
+
+```js
+app.in.client.use('hello/:name', (message, next) => {
+  console.log(`Hello from client, ${message.route.params.name}!`);
+  next();
+});
+```
+
+#### app.in.broker.use(...fn)
+#### app.in.broker.use(route, ...fn)
+#### app.in.broker.use(route, HermesRouter)
+
+It's for the same purpose as `app.use` but this route/middleware will be only
+executed if the message comes from the broker.
+
+```js
+app.in.broker.use('hello/:name', (message, next) => {
+  console.log(`Hello from broker, ${message.route.params.name}!`);
+  next();
+});
+```
+
+#### app.listen()
+
+Actually starts the application and listens for messages:
+
+```js
+app.listen();
+```
+
+### Message
+
+#### message.stop()
+
+It stops the message from being delivered and processed by another middleware. It other words,
+this is a **full stop**. Message piping ends here.
+
+```js
+app.use('hello/:name', (message, next) => {
+  // This will stop the hello/world message. Even if we call
+  // next, further middlewares will not be called.
+  if (message.route.params.name === 'world') message.stop();
+  next();
+});
+```
+
+#### message.cancelDelivery()
+
+It cancels the delivery of the message but, unlike `message.stop()` the message will continue
+passing through the next middlewares.
+
+```js
+function checkIsHelloWorld (message, next) {
+  // Message will not reach the other side if its topic is hello/world.
+  // If the message comes from the client it will never reach the broker and viceversa.
+  // However the message will still be routed onto next middlewares, if any.
+  if (message.route.params.name === 'world') return message.cancelDelivery();
+}
+
+app.use('hello/:name', checkIsHelloWorld, (message, next) => {
+  console.log('You will see this even if it is hello/world. Read comments above.');
+  next();
+});
+```
+
+#### message.reply([[topic,] payload])
+
+Replies back to the message sender. If the message was sent by client, it will reply to
+client. If message was sent by broker, it will reply to broker. It's easy, huh?
+
+```js
+app.in.client.use('hello/:name', (message, next) => {
+  if (message.route.params.name === 'world') {
+    return message.reply('hello/world/response', 'Stop using hello world, please.');
+  }
+
+  next();
+});
+```
+
+`topic` and `payload` arguments are both optional. Here you have a short explanation of every combination:
+
+* `message.reply()`: It replies back to the same topic using same payload (echo).
+* `message.reply(payload)`: It replies back to the same topic using the given payload.
+* `message.reply(topic)`: It replies back to the the given topic using the same payload.
+* `message.reply(topic, payload)`: It replies back to the the given topic using the given payload.
+
+#### message.route.params
+
+Object containing all the params in the message topic, i.e.:
+
+```js
+app.in.broker.use('hello/:name/:surname', (message, next) => {
+  // Given the `hello/tim/burton` topic, the params will look like:
+  // message.route.params = {
+  //   name: 'tim',
+  //   surname: 'burton'
+  // }
+}
 });
 ```
