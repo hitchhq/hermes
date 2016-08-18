@@ -6,7 +6,6 @@
   "author": "Francisco Méndez Vilas (fmvilas@gmail.com)",
   "license": "MIT",
   "scripts": {
-    "test": "DEBUG=hermes node examples/mqtt_server",
     "2npm": "publish"
   },
   "keywords": [
