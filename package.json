@@ -6,7 +6,8 @@
   "author": "Francisco Méndez Vilas (fmvilas@gmail.com)",
   "license": "MIT",
   "scripts": {
-    "test": "DEBUG=hermes node examples/mqtt_server"
+    "test": "DEBUG=hermes node examples/mqtt_server",
+    "2npm": "publish"
   },
   "keywords": [
     "real-time",
@@ -28,5 +29,8 @@
     "hermesjs-router": "~1.0.0",
     "path-to-regexp": "^1.5.3",
     "utils-merge": "^1.0.0"
+  },
+  "devDependencies": {
+    "publish": "^0.6.0"
   }
 }
