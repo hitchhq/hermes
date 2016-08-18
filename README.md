@@ -19,7 +19,7 @@ npm install --save hermesjs
 
 ## Getting Started
 
-Check [examples folder](./examples/).
+Check [examples repo](https://github.com/hitchhq/hermes-examples).
 
 ## API
 
