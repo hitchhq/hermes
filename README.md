@@ -154,6 +154,34 @@ app.in.broker.use('hello/:name', (message, next) => {
 });
 ```
 
+#### app.from.broker.send(message)
+
+It will inject a message into the middleware pipeline as if it were coming from the broker. `message`
+can be either an object containing `topic` and `payload` or a HermesMessage instance.
+
+```js
+app.from.broker.send({
+  topic: 'hello/fran',
+  payload: {
+    greetings: 'Greetings from the broker'
+  }
+});
+```
+
+#### app.from.client.send(message)
+
+It will inject a message into the middleware pipeline as if it were coming from the client. `message`
+can be either an object containing `topic` and `payload` or a HermesMessage instance.
+
+```js
+app.from.client.send({
+  topic: 'hello/fran',
+  payload: {
+    greetings: 'Greetings from the client'
+  }
+});
+```
+
 #### app.listen()
 
 Actually starts the application and listens for messages:
