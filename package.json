@@ -25,6 +25,7 @@
   "dependencies": {
     "array-flatten": "^2.1.0",
     "debug": "~2.2.0",
+    "hermesjs-message": "^2.0.0",
     "hermesjs-router": "~1.1.0",
     "path-to-regexp": "^1.5.3",
     "utils-merge": "^1.0.0"
