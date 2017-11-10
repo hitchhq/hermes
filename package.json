@@ -1,6 +1,6 @@
 {
   "name": "hermesjs",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "description": "Real-time messaging framework",
   "main": "index.js",
   "author": "Francisco Méndez Vilas (fmvilas@gmail.com)",
